@@ -9,6 +9,18 @@
                         </el-menu-item>
                     </template>
                 </el-menu>
+                <!--分页-->
+                <el-pagination
+                        layout="prev, jumper, next, slot"
+                        :total="databaseTotal"
+                        :page-size="15"
+                        @current-change="databasePageChange"
+                        small
+                        background
+                        hide-on-single-page
+                >
+                    <span>共{{ databaseTotal }}页</span>
+                </el-pagination>
             </el-aside>
             <el-main>
                 this is databse execute page
@@ -29,7 +41,7 @@
         data() {
             return {
                 databaseList: [],
-
+                databaseTotal: 0,
             }
         },
         methods: {
@@ -40,9 +52,14 @@
                         console.log(data);
                         if ('success' === result) {
                             this.databaseList = data.list
+                            this.databaseTotal = data.total;
                         }
                     })
-            }
+            },
+            // 菜单分页
+            databasePageChange(page) {
+                console.log(page)
+            },
         }
     }
 </script>
