@@ -32,4 +32,7 @@
 
 <style scoped>
     @import "style.css";
+    * {
+        padding: 0
+    }
 </style>
