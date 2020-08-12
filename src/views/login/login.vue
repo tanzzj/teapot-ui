@@ -2,7 +2,7 @@
     <el-container v-loading="loadingStatus">
         <el-main>
             <el-card class="box-card">
-                <!-- <p>测试帐号：tanzj 测试密码：tanzj</p> -->
+                <p>测试帐号：tanzj 测试密码：tanzj</p>
                 <div class="username">
                     <el-input placeholder="type your username" type="text" v-model="username"/>
                 </div>
@@ -35,11 +35,11 @@
                         password: this.password
                     }
                 ).then(({result, message, data}) => {
-                    if (result==='success'){
+                    if ('success' === result) {
                         console.log(result);
-                        //tbd
+                        //跳转到index页
+                        this.router.push("/")
                     }
-
                 })
             }
         }

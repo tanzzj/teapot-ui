@@ -2,7 +2,7 @@
   "menuList": [
     {
       "index": 0,
-      "name":"instances",
+      "name":"database",
       "title":"实例管理",
       "icon":""
     },

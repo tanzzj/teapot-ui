@@ -4,7 +4,7 @@ import { MessageBox, Message } from 'element-ui'
 // create an axios instance
 const service = axios.create({
   //url = base url + request url
-  baseURL: '/api', 
+  baseURL: '/',
   //send cookies when cross-domain requests
   withCredentials: true, 
   //request timeout

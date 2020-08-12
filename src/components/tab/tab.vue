@@ -7,7 +7,7 @@
                 mode="vertical"
         >
             <template v-for="(menuItem) in menuData.menuList">
-                <el-menu-item :index="menuItem.index">
+                <el-menu-item :index="menuItem.index" @click="turnTo(menuItem.name)">
                     <span slot="title">{{menuItem.title}}</span>
                 </el-menu-item>
             </template>
@@ -26,13 +26,19 @@
         },
         data() {
             return {
-
                 router: this.$router,
                 /**
                  * 菜单是否关闭
                  */
                 isCollapse: false,
                 menuData: menuData,
+            }
+        },
+        methods: {
+            turnTo(component) {
+                this.router.push({
+                    name: component
+                })
             }
         }
     }

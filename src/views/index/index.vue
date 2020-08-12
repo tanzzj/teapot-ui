@@ -9,7 +9,6 @@
                     <tab/>
                 </el-aside>
                 <el-main>
-                    {{message}}
                     <router-view/>
                 </el-main>
             </el-container>
