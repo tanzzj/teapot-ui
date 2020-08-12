@@ -1,0 +1,22 @@
+{
+  "menuList": [
+    {
+      "index": 0,
+      "name":"instances",
+      "title":"实例管理",
+      "icon":""
+    },
+    {
+      "index": 1,
+      "name":"projects",
+      "title":"项目管理",
+      "icon":""
+    },
+    {
+      "index": 2,
+      "name":"orders",
+      "title":"工单管理",
+      "icon":""
+    }
+  ]
+}

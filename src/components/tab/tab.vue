@@ -1,0 +1,43 @@
+<template>
+    <div class="tab">
+        <el-menu
+                :collapse="isCollapse"
+                active-color="#cecece"
+                background-color="#eaeaea"
+                mode="vertical"
+        >
+            <template v-for="(menuItem) in menuData.menuList">
+                <el-menu-item :index="menuItem.index">
+                    <span slot="title">{{menuItem.title}}</span>
+                </el-menu-item>
+            </template>
+        </el-menu>
+    </div>
+</template>
+
+<script>
+    //菜单
+    const menuData = require("@components/tab/menu.json")
+
+    export default {
+        name: "tab.vue",
+        mounted() {
+            console.log(this.menuData)
+        },
+        data() {
+            return {
+
+                router: this.$router,
+                /**
+                 * 是否关闭
+                 */
+                isCollapse: false,
+                menuData: menuData,
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    @import 'style.css';
+</style>
