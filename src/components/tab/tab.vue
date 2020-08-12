@@ -29,7 +29,7 @@
 
                 router: this.$router,
                 /**
-                 * 是否关闭
+                 * 菜单是否关闭
                  */
                 isCollapse: false,
                 menuData: menuData,

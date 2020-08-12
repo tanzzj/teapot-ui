@@ -9,7 +9,7 @@ module.exports = {
         proxy: {
             '^/api': {
                 //要跨域的域名
-                target: 'http://127.0.0.1/api',
+                target: 'http://127.0.0.1:9125/api',
                 // 是否启用websockets
                 ws: true,
                 //是否允许跨域
@@ -28,7 +28,7 @@ module.exports = {
             .set("@scss",  resolve("src/assets/scss"))      
             .set("@components",  resolve("src/components"))      
             .set("@views",  resolve("src/views"))      
-            .set("@utils",  resolve("src/utils"))      
+            .set("@util",  resolve("src/util"))      
             .set("@conf",  resolve("src/config"))      
             .set("@store",  resolve("src/store"));  
     }
