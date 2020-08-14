@@ -37,7 +37,7 @@
         methods: {
             turnTo(menuItem) {
                 if (menuItem.type === 'redirect') {
-                    window.location.href = menuItem.redirectTo;
+                    window.frames['customFrame'].location.href = menuItem.redirectTo;
                 } else {
                     this.router.push({
                         name: menuItem.name

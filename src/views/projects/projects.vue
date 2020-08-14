@@ -29,7 +29,7 @@
                     <el-tab-pane label="项目详情" name="projectDetails">项目详情</el-tab-pane>
                     <el-tab-pane label="数据源" name="projectDatabase"/>
                     <el-tab-pane label="配置中心" name="projectConfiguration">配置中心</el-tab-pane>
-                    <el-tab-pane label="工单" name="projectOrders">工单</el-tab-pane>
+                    <el-tab-pane label="工单" name="projectOrders"></el-tab-pane>
                     <el-tab-pane label="变量" name="projectParams">变量</el-tab-pane>
                     <router-view/>
                 </el-tabs>
@@ -43,9 +43,9 @@
                 </el-form-item>
             </el-form>
             <span class="dialog-footer" slot="footer">
-            <el-button @click="closeCreateProjectDialog">取 消</el-button>
-            <el-button @click="createProject" type="primary">确 定</el-button>
-         </span>
+                <el-button @click="closeCreateProjectDialog">取 消</el-button>
+                <el-button @click="createProject" type="primary">确 定</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
