@@ -7,7 +7,7 @@
                 mode="vertical"
         >
             <template v-for="(menuItem) in menuData.menuList">
-                <el-menu-item :index="menuItem.index" @click="turnTo(menuItem.name)">
+                <el-menu-item :index="menuItem.index" @click="turnTo(menuItem)">
                     <span slot="title">{{menuItem.title}}</span>
                 </el-menu-item>
             </template>
@@ -35,10 +35,15 @@
             }
         },
         methods: {
-            turnTo(component) {
-                this.router.push({
-                    name: component
-                })
+            turnTo(menuItem) {
+                if (menuItem.type === 'redirect') {
+                    window.location.href = menuItem.redirectTo;
+                } else {
+                    this.router.push({
+                        name: menuItem.name
+                    })
+                }
+
             }
         }
     }

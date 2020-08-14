@@ -1,8 +1,9 @@
-const  path  =  require("path");
+const path = require("path");
 
-function  resolve(dir)  {  
-    return  path.join(__dirname,  dir);
+function resolve(dir) {
+    return path.join(__dirname, dir);
 }
+
 module.exports = {
     publicPath: '/',
     devServer: {
@@ -21,16 +22,18 @@ module.exports = {
             }
         }
     },
-    chainWebpack:  config  =>  {    
-        config.resolve.alias      
-            .set("@model",  resolve("src/model"))      
-            .set("@assets",  resolve("src/assets"))      
-            .set("@scss",  resolve("src/assets/scss"))      
-            .set("@components",  resolve("src/components"))      
-            .set("@views",  resolve("src/views"))      
-            .set("@util",  resolve("src/util"))      
-            .set("@conf",  resolve("src/config"))      
-            .set("@store",  resolve("src/store"));  
+    chainWebpack: config => {
+        config.resolve.alias
+            .set("@model", resolve("src/model"))
+            .set("@assets", resolve("src/assets"))
+            .set("@scss", resolve("src/assets/scss"))
+            .set("@components", resolve("src/components"))
+            .set("@views", resolve("src/views"))
+            .set("@util", resolve("src/util"))
+            .set("@conf", resolve("src/config"))
+            .set("@style", resolve("src/style"))
+            .set("@store", resolve("src/store"));
+
     }
 
 }

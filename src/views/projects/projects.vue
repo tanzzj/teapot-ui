@@ -5,7 +5,7 @@
                 <div @click="showCreateProjectDialog=true">添加项目</div>
                 <el-menu>
                     <template v-for="(projectItem,index) in projectList">
-                        <el-menu-item :index="index">
+                        <el-menu-item :index="index.toString()" @click="currentProject=projectItem">
                             <span slot="title">{{projectItem.projectName}}</span>
                         </el-menu-item>
                     </template>
@@ -24,7 +24,15 @@
                 </el-pagination>
             </el-aside>
             <el-main>
-                this is project page
+                <el-tabs v-model="activeName" type="border-card" @tab-click="handleTabClick"
+                         v-if="currentProject!=null">
+                    <el-tab-pane label="项目详情" name="projectDetails">项目详情</el-tab-pane>
+                    <el-tab-pane label="数据源" name="projectDatabase"/>
+                    <el-tab-pane label="配置中心" name="projectConfiguration">配置中心</el-tab-pane>
+                    <el-tab-pane label="工单" name="projectOrders">工单</el-tab-pane>
+                    <el-tab-pane label="变量" name="projectParams">变量</el-tab-pane>
+                    <router-view/>
+                </el-tabs>
             </el-main>
         </el-container>
         <!--dialog区-->
@@ -53,10 +61,13 @@
         },
         data() {
             return {
+                router: this.$router,
                 projectList: [],
                 projectTotal: 0,
                 projectName: '',
-                showCreateProjectDialog: false
+                showCreateProjectDialog: false,
+                activeName: '',
+                currentProject: null,
             }
         },
         methods: {
@@ -88,6 +99,14 @@
             closeCreateProjectDialog() {
                 this.showCreateProjectDialog = false;
                 this.$refs['projectRef'].resetFields();
+            },
+            handleTabClick({name}) {
+                this.router.push({
+                    name: name,
+                    params: {
+                        projectId: this.currentProject.projectId
+                    }
+                })
             }
         }
     }

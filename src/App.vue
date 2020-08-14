@@ -24,7 +24,8 @@
     * {
         padding: 0
     }
-    body{
+
+    .el-main {
         padding: 0;
     }
 </style>

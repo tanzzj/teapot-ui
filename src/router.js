@@ -5,6 +5,8 @@ import login from '@views/login/login.vue'
 import database from '@views/database/database.vue'
 import orders from '@views/orders/orders.vue'
 import projects from '@views/projects/projects.vue'
+import projectOrders from '@views/projects/orders/orders.vue'
+import projectDatabase from '@views/projects/database/database.vue'
 
 Vue.use(VueRouter)
 
@@ -17,14 +19,25 @@ const routes = [
             path: '/database',
             name: 'database',
             component: database
-        },{
+        }, {
             path: '/orders',
             name: 'orders',
             component: orders
-        },{
+        }, {
             path: '/projects',
             name: 'projects',
-            component: projects
+            component: projects,
+            children: [
+                {
+                    path: '/orders',
+                    name: 'projectOrders',
+                    component: projectOrders
+                },
+                {
+                    path: '/database',
+                    name: 'projectDatabase',
+                    component: projectDatabase
+                }]
         }]
     },
     {
