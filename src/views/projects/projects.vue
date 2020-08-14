@@ -26,11 +26,10 @@
             <el-main>
                 <el-tabs v-model="activeName" type="border-card" @tab-click="handleTabClick"
                          v-if="currentProject!=null">
-                    <el-tab-pane label="项目详情" name="projectDetails">项目详情</el-tab-pane>
                     <el-tab-pane label="数据源" name="projectDatabase"/>
                     <el-tab-pane label="配置中心" name="projectConfiguration">配置中心</el-tab-pane>
-                    <el-tab-pane label="工单" name="projectOrders"></el-tab-pane>
-                    <el-tab-pane label="变量" name="projectParams">变量</el-tab-pane>
+                    <el-tab-pane label="工单" name="projectOrders"/>
+                    <el-tab-pane label="变量" name="projectParams"/>
                     <router-view/>
                 </el-tabs>
             </el-main>
@@ -58,6 +57,12 @@
         name: "projects",
         mounted() {
             this.queryProjectList(null)
+            this.router.push({
+                name: 'projectDatabase',
+                params: {
+                    projectId: this.currentProject.projectId
+                }
+            })
         },
         data() {
             return {
@@ -66,7 +71,7 @@
                 projectTotal: 0,
                 projectName: '',
                 showCreateProjectDialog: false,
-                activeName: '',
+                activeName: 'projectDatabase',
                 currentProject: null,
             }
         },
