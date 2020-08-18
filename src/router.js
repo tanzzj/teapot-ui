@@ -7,6 +7,7 @@ import orders from '@views/orders/orders.vue'
 import projects from '@views/projects/projects.vue'
 import projectOrders from '@views/projects/orders/orders.vue'
 import projectDatabase from '@views/projects/database/database.vue'
+import custom from '@views/custom/custom.vue'
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,10 @@ const routes = [
                     name: 'projectDatabase',
                     component: projectDatabase
                 }]
+        },{
+            path: '/custom',
+            name: 'custom',
+            component: custom
         }]
     },
     {
