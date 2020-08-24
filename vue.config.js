@@ -19,7 +19,17 @@ module.exports = {
                     //将你的地址代理位这个 /api 接下来请求时就使用这个/api来代替你的地址
                     '^/api': ''
                 },
+            },
+            '^/nacos':{
+                //要跨域的域名
+                target: 'http://127.0.0.1:8848/nacos',
+                ws: true,
+                changeOrigin: false,
+                pathRewrite: {
+                    '^/nacos': ''
+                },
             }
+
         }
     },
     chainWebpack: config => {

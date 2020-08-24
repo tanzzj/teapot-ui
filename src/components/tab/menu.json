@@ -23,7 +23,21 @@
       "name": "nacos",
       "title": "nacos",
       "type": "redirect",
-      "redirectTo": "http://202.135.136.115:8848/nacos"
+      "redirectTo": "http://127.0.0.1:8080/nacos/"
+    },
+    {
+      "index": "4",
+      "name": "yapi",
+      "title": "yapi",
+      "type": "redirect",
+      "redirectTo": "http://127.0.0.1:3000"
+    },
+    {
+      "index": "5",
+      "name": "zipkin",
+      "title": "zipkin",
+      "type": "redirect",
+      "redirectTo": "http://127.0.0.1:9800/zipkin/"
     }
   ]
 }
