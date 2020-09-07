@@ -23,3 +23,11 @@ export function _createProjectOrder(data) {
         data
     })
 }
+
+export function _mergeOrder(data) {
+    return request({
+        url: '/api/project/order/mergeOrder',
+        method: 'post',
+        data
+    })
+}

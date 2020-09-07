@@ -1,11 +1,13 @@
 <template>
     <div>
-        <el-button type="primary" @click="createOrder">创建工单</el-button>
-        <el-table :data="projectList" style="width: 100%">
-            <el-table-column prop="projectOrderName" label="工单名" width="180"/>
-            <el-table-column prop="orderState" label="工单状态" width="180"/>
-            <el-table-column prop="createUser" label="创建人" width="180"/>
-            <el-table-column prop="createTime" label="创建时间" width="180"/>
+        <el-button @click="createOrder" type="primary">创建工单</el-button>
+        <el-button @click="mergeQueryClick" type="primary">合并查询</el-button>
+        <el-table :data="projectList" @selection-change="handleSelectionChange" style="width: 100%">
+            <el-table-column type="selection" width="55"/>
+            <el-table-column label="工单名" prop="projectOrderName" width="180"/>
+            <el-table-column label="工单状态" prop="orderState" width="180"/>
+            <el-table-column label="创建人" prop="createUser" width="180"/>
+            <el-table-column label="创建时间" prop="createTime" width="180"/>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
                     <span @click="handleClickOrdersDetails(scope.row)">详情</span>
@@ -36,7 +38,7 @@
                     <el-input v-model="createOrderParams.projectOrderDetail"/>
                 </el-form-item>
                 <el-form-item label="工单内容" prop="content">
-                    <el-input v-model="createOrderParams.content" type="textarea"/>
+                    <el-input type="textarea" v-model="createOrderParams.content"/>
                 </el-form-item>
                 <!--                <el-form-item label="审批人" prop="assignedUserList">-->
                 <!--                    <el-input v-model="createOrderParams.assignedUserList"/>-->
@@ -45,6 +47,12 @@
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeCreateOrderDialog">取 消</el-button>
                 <el-button @click="createProjectOrder" type="primary">创 建</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog :visible.sync="showMergeOrderDialog" title="合并查询工单">
+            <el-input :rows="10" placeholder="请输入内容" type="textarea" v-model="orderContent"/>
+            <span class="dialog-footer" slot="footer">
+                <el-button @click="showMergeOrderDialog=false">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -59,6 +67,7 @@
         _queryProjectOrderList
     } from '@views/projects/orders/orders.js'
     import {PageParams} from "@/model/PageParams";
+    import {_mergeOrder} from "./orders";
 
     export default {
         name: "orders",
@@ -69,9 +78,13 @@
             return {
                 projectId: this.$route.params.projectId,
                 showCreateOrderDialog: false,
+                showSelection: false,
                 showOrdersDetailsDialog: false,
+                showMergeOrderDialog: false,
+                orderContent: '',
                 projectList: [],
                 orderDetails: {},
+                selectedRows: [],
                 createOrderParams: {
                     projectOrderName: null,
                     orderType: null,
@@ -122,6 +135,26 @@
             closeCreateOrderDialog() {
                 this.showCreateOrderDialog = false;
                 this.$refs['createOrdersRef'].resetFields();
+            },
+            mergeQueryClick() {
+                let projectOrderList = [];
+                this.selectedRows.forEach(rows => {
+                    projectOrderList.push(({projectOrderId: rows.projectOrderId}))
+                })
+                //调用合并查询工单接口
+                _mergeOrder({
+                    'projectId': this.projectId,
+                    'projectOrderList': projectOrderList
+                }).then(({result, message, data}) => {
+                    this.showMergeOrderDialog = true;
+                    data.forEach(eachOrder => {
+                        this.orderContent += eachOrder.content + '\n'
+                    })
+                })
+            },
+            handleSelectionChange(rows) {
+                this.selectedRows = rows;
+                console.log(this.selectedRows)
             }
         }
 
