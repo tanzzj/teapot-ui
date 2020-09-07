@@ -4,5 +4,5 @@ export class PageParams {
         this.pageSize = pageSize;
         this.params = params;
     }
-
 }
+export default PageParams;

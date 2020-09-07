@@ -5,7 +5,20 @@
         <el-table :data="projectList" @selection-change="handleSelectionChange" style="width: 100%">
             <el-table-column type="selection" width="55"/>
             <el-table-column label="工单名" prop="projectOrderName" width="180"/>
-            <el-table-column label="工单状态" prop="orderState" width="180"/>
+            <el-table-column label="工单状态" prop="orderState" width="180">
+                <template slot-scope="scope">
+                    <el-tag :type="scope.row.orderState=== 2 ? 'success':''">{{
+                        scope.row.orderState | filterOrderState }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="工单类型" prop="orderType" width="180">
+                <template slot-scope="scope">
+                    <div>
+                        {{scope.row.orderType | filterOrderType }}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="创建人" prop="createUser" width="180"/>
             <el-table-column label="创建时间" prop="createTime" width="180"/>
             <el-table-column label="操作" width="180">
@@ -67,7 +80,7 @@
         _queryProjectOrderDetails,
         _queryProjectOrderList
     } from '@views/projects/orders/orders.js'
-    import {PageParams} from "@/model/PageParams";
+    import {PageParams} from "../../../model/PageParams";
 
     export default {
         name: "orders",
@@ -82,6 +95,7 @@
                 showOrdersDetailsDialog: false,
                 showMergeOrderDialog: false,
                 orderContent: '',
+                pageParams: new PageParams(),
                 projectList: [],
                 orderDetails: {},
                 selectedRows: [],
