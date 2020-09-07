@@ -52,7 +52,7 @@
         <el-dialog :visible.sync="showMergeOrderDialog" title="合并查询工单">
             <el-input :rows="10" placeholder="请输入内容" type="textarea" v-model="orderContent"/>
             <span class="dialog-footer" slot="footer">
-                <el-button @click="showMergeOrderDialog=false">确 定</el-button>
+                <el-button @click="handleCloseMergeOrderDialog" type="primary">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -63,11 +63,11 @@
 <script>
     import {
         _createProjectOrder,
+        _mergeOrder,
         _queryProjectOrderDetails,
         _queryProjectOrderList
     } from '@views/projects/orders/orders.js'
     import {PageParams} from "@/model/PageParams";
-    import {_mergeOrder} from "./orders";
 
     export default {
         name: "orders",
@@ -136,6 +136,9 @@
                 this.showCreateOrderDialog = false;
                 this.$refs['createOrdersRef'].resetFields();
             },
+            /**
+             * 处理点击合并工单按钮
+             * */
             mergeQueryClick() {
                 let projectOrderList = [];
                 this.selectedRows.forEach(rows => {
@@ -148,13 +151,23 @@
                 }).then(({result, message, data}) => {
                     this.showMergeOrderDialog = true;
                     data.forEach(eachOrder => {
-                        this.orderContent += eachOrder.content + '\n'
+                        this.orderContent += eachOrder.content + '\n\n'
                     })
                 })
             },
+            /**
+             * 处理工单多选框
+             */
             handleSelectionChange(rows) {
                 this.selectedRows = rows;
                 console.log(this.selectedRows)
+            },
+            /**
+             * 处理关闭合并查询弹窗
+             */
+            handleCloseMergeOrderDialog() {
+                this.orderContent = ''
+                this.showMergeOrderDialog = false
             }
         }
 
