@@ -64,8 +64,17 @@
         </el-dialog>
         <el-dialog :visible.sync="showMergeOrderDialog" title="合并查询工单">
             <el-input :rows="10" placeholder="请输入内容" type="textarea" v-model="orderContent"/>
+            <el-select placeholder="请选择数据源" v-model="selectedDatabase">
+                <el-option :key="item.databaseId" :label="item.databaseName" :value="item.databaseId" v-for="item in projectDatabaseList"/>
+            </el-select>
             <span class="dialog-footer" slot="footer">
-                <el-button @click="handleCloseMergeOrderDialog" type="primary">确 定</el-button>
+                <el-button @click="handleCloseMergeOrderDialog">取 消</el-button>
+            </span>
+            <span class="dialog-footer" slot="footer">
+                <el-button @click="handleCloseMergeOrderDialog" type="primary">导 出</el-button>
+            </span>
+            <span class="dialog-footer" slot="footer">
+                <el-button @click="executeSQL" type="primary">执 行</el-button>
             </span>
         </el-dialog>
     </div>
@@ -80,6 +89,10 @@
         _queryProjectOrderDetails,
         _queryProjectOrderList
     } from '@views/projects/orders/orders.js'
+    import {
+        _queryProjectDataBaseList,
+        _executeSQL
+    } from '@views/projects/database/database.js'
     import {PageParams} from "../../../model/PageParams";
 
     export default {
@@ -95,7 +108,9 @@
                 showOrdersDetailsDialog: false,
                 showMergeOrderDialog: false,
                 orderContent: '',
+                selectedDatabase: '',
                 pageParams: new PageParams(),
+                projectDatabaseList: [],
                 projectList: [],
                 orderDetails: {},
                 selectedRows: [],
@@ -168,6 +183,7 @@
                         this.orderContent += eachOrder.content + '\n\n'
                     })
                 })
+                this.queryProjectDataBaseList();
             },
             /**
              * 处理工单多选框
@@ -182,6 +198,27 @@
             handleCloseMergeOrderDialog() {
                 this.orderContent = ''
                 this.showMergeOrderDialog = false
+            },
+            /**
+             * 查询项目绑定数据源列表
+             */
+            queryProjectDataBaseList() {
+                _queryProjectDataBaseList({'projectId': this.projectId}).then(({message, result, data}) => {
+                    if ('success' === result) {
+                        this.projectDatabaseList = data
+                    }
+                })
+            },
+            /**
+             * 执行sql
+             */
+            executeSQL(){
+                _executeSQL({
+                    'databaseId':this.selectedDatabase,
+                    'sql':this.orderContent
+                }).then(({message,result,data})=>{
+                    console.log(message,result,data)
+                })
             }
         }
 

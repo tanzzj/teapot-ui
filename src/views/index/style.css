@@ -1,11 +1,12 @@
-.index-container{
+.index-container {
     background: #42b983;
 }
 
-.head-bar-container{
+.head-bar-container {
     background: red;
 }
 
-.tab-container{
-  background: rebeccapurple;
+.tab-container {
+    background: rebeccapurple;
+    width: 100px;
 }

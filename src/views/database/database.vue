@@ -5,7 +5,7 @@
                 <div @click="showAddDataSourceDialog=true">添加数据源</div>
                 <el-menu>
                     <template v-for="databaseItem in databaseList">
-                        <el-menu-item :index="databaseItem.id">
+                        <el-menu-item :index="databaseItem.id" @click="handleClickDatabase(databaseItem)">
                             <span slot="title">{{databaseItem.databaseName}}</span>
                         </el-menu-item>
                     </template>
@@ -24,7 +24,7 @@
                 </el-pagination>
             </el-aside>
             <el-main>
-                this is databse execute page
+                <router-view/>
             </el-main>
         </el-container>
         <el-dialog :visible.sync="showAddDataSourceDialog" title="添加数据源">
@@ -65,6 +65,7 @@
         },
         data() {
             return {
+                router: this.$router,
                 databaseList: [],
                 databaseTotal: 0,
                 showAddDataSourceDialog: false,
@@ -113,6 +114,15 @@
             closeAddDatabaseDialog() {
                 this.showAddDataSourceDialog = false;
                 this.$refs['dataSourceRef'].resetFields();
+            },
+            handleClickDatabase(database) {
+                console.log(database)
+                this.router.push({
+                    name: 'query',
+                    params: {
+                        database: database
+                    }
+                })
             }
         }
     }

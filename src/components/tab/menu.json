@@ -23,21 +23,21 @@
       "name": "nacos",
       "title": "nacos",
       "type": "redirect",
-      "redirectTo": "http://127.0.0.1:8080/nacos/"
+      "redirectTo": "http://nacos.teamer.com.cn"
     },
     {
       "index": "4",
       "name": "yapi",
       "title": "yapi",
       "type": "redirect",
-      "redirectTo": "http://127.0.0.1:3000"
+      "redirectTo": "http://yapi.teamer.com.cn"
     },
     {
       "index": "5",
       "name": "zipkin",
       "title": "zipkin",
       "type": "redirect",
-      "redirectTo": "http://127.0.0.1:9800/zipkin/"
+      "redirectTo": "http://zipkin.teamer.com.cn"
     }
   ]
 }

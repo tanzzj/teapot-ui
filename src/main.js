@@ -24,7 +24,10 @@ for (let key in filters) {
     Vue.prototype[key] = filters[key]
 }
 
+//分页对象
 Vue.prototype.PageParams = PageParams
+//点击空白不关闭dialog
+ElementUI.Dialog.props.closeOnClickModal.default = false;
 new Vue({
     router,
     render: h => h(App),

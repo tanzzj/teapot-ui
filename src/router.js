@@ -3,11 +3,12 @@ import VueRouter from 'vue-router'
 import index from '@views/index/index.vue'
 import login from '@views/login/login.vue'
 import database from '@views/database/database.vue'
-import orders from '@views/orders/orders.vue'
+import query from '@views/database/query/query.vue'
 import projects from '@views/projects/projects.vue'
 import projectOrders from '@views/projects/orders/orders.vue'
 import projectDatabase from '@views/projects/database/database.vue'
 import custom from '@views/custom/custom.vue'
+import orders from '@views/orders/orders.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,14 @@ const routes = [
         children: [{
             path: '/database',
             name: 'database',
-            component: database
+            component: database,
+            children: [
+                {
+                    path: '/query',
+                    name: 'query',
+                    component: query
+                }
+            ]
         }, {
             path: '/orders',
             name: 'orders',
@@ -39,7 +47,7 @@ const routes = [
                     name: 'projectDatabase',
                     component: projectDatabase
                 }]
-        },{
+        }, {
             path: '/custom',
             name: 'custom',
             component: custom

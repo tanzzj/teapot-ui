@@ -1,12 +1,12 @@
 <template>
     <div>
-        <el-button type="primary" @click="handleClickAddProjectDatabase">关联数据源</el-button>
-        <el-table
-                :data="databaseList"
-                style="width: 100%">
-            <el-table-column
-                    prop="databaseName"
-                    label="数据库名">
+        <el-button @click="handleClickAddProjectDatabase" type="primary">关联数据源</el-button>
+        <el-table :data="databaseList">
+            <el-table-column label="数据库名" prop="databaseName"/>
+            <el-table-column label="" prop="execute">
+                <template slot-scope="scope">
+                    <div @click="handleClickQueryButton(scope.row)">查询</div>
+                </template>
             </el-table-column>
         </el-table>
         <el-dialog :visible.sync="showAddProjectDatabaseInstanceDialog" title="关联数据源">
@@ -50,6 +50,13 @@
             },
             handleClickAddProjectDatabase() {
                 this.showAddProjectDatabaseInstanceDialog = true
+            },
+            /**
+             * 点击数据源查询按钮
+             * @param row 数据源对象
+             */
+            handleClickQueryButton(database) {
+                console.log(database)
             }
 
         }
