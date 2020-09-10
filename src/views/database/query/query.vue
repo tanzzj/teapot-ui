@@ -8,14 +8,25 @@
             <el-button @click="handleExecuteSQL" type="primary">执行</el-button>
         </div>
         <div>
-            <el-table border stripe :data="sqlResult" style="width: 100%">
-                <el-table-column
-                        :key="metadataItem.name"
-                        :label="metadataItem.name"
-                        :prop="metadataItem.name"
-                        v-for="metadataItem in metadataList"
-                />
-            </el-table>
+            <el-tabs @tab-click="handleClickTab" closable type="border-card">
+                <!-- dataResult:{dataList/metaData/sqlType} -->
+                <template v-for="(dataResult,index) in dataList">
+                    <el-tab-pane :key="index" :label="'result'+index" :name="index+''"
+                                 @click="handleClickTab(dataResult)"/>
+                </template>
+                <el-table :data="sqlResult" border fit stripe style="width: 100%" v-if="currentSqlType=='select'">
+                    <el-table-column
+                            :key="metadataItem.name"
+                            :label="metadataItem.name"
+                            :prop="metadataItem.name"
+                            v-for="metadataItem in metadataList"
+                    />
+                </el-table>
+                <div v-else>
+                    {{dmlSqlResult}}
+                </div>
+            </el-tabs>
+
         </div>
     </div>
 </template>
@@ -34,8 +45,11 @@
                 router: this.$router,
                 sqlContent: '',
                 sqlResult: [],
+                dmlSqlResult: '',
                 metadataList: [],
-                selectedDatabase: {}
+                selectedDatabase: {},
+                dataList: [],
+                currentSqlType: ''
             }
         },
         methods: {
@@ -44,11 +58,21 @@
                     'sql': this.sqlContent,
                     'databaseId': this.selectedDatabase.databaseId
                 })).then(({message, result, data}) => {
-                    console.log(data)
+                    //默认取第一个数组
                     this.sqlResult = data[0].dataList;
                     this.metadataList = data[0].metaData;
-                    console.log(this.metadataList, this.sqlResult)
+                    this.dataList = data;
                 })
+            },
+            /**
+             * 处理点击tab事件
+             * @param tab
+             * @param event
+             */
+            handleClickTab(tab, event) {
+                this.sqlResult = this.dataList[tab.name]
+                this.metadataList = this.dataList[tab.name].metaData;
+                this.sqlResult = this.dataList[tab.name].dataList;
             }
         }
     }
