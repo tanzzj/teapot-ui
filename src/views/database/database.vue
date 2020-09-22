@@ -5,7 +5,8 @@
                 <div @click="showAddDataSourceDialog=true">添加数据源</div>
                 <el-menu>
                     <template v-for="databaseItem in databaseList">
-                        <el-menu-item :index="databaseItem.id" @click="handleClickDatabase(databaseItem)">
+                        <el-menu-item :index="databaseItem.id" @click="handleClickDatabase(databaseItem)"
+                                      style="text-align: left">
                             <span slot="title">{{databaseItem.databaseName}}</span>
                         </el-menu-item>
                     </template>
