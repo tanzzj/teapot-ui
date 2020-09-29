@@ -3,14 +3,11 @@
         <el-container>
             <el-aside>
                 <div @click="showAddDataSourceDialog=true">添加数据源</div>
-                <el-menu>
-                    <template v-for="databaseItem in databaseList">
-                        <el-menu-item :index="databaseItem.id" @click="handleClickDatabase(databaseItem)"
-                                      style="text-align: left">
-                            <span slot="title">{{databaseItem.databaseName}}</span>
-                        </el-menu-item>
-                    </template>
-                </el-menu>
+                <el-tree :data="databaseList" :load="loadNode" :props="defaultProps" @node-click="handleClickDatabase" lazy>
+                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <span><i class="el-icon-coin"/>{{ node.label }}</span>
+                        </span>
+                </el-tree>
                 <!--分页-->
                 <el-pagination
                         :page-size="15"
@@ -58,6 +55,7 @@
 <script>
     import {_addDatabase, _queryDatabaseList} from '@views/database/database.js'
     import {PageParams} from "@model/PageParams";
+    import {_executeSQL} from '@views/database/query/query.js'
 
     export default {
         name: "database",
@@ -76,6 +74,10 @@
                     username: '',
                     password: '',
                     databaseType: ''
+                },
+                defaultProps: {
+                    children: 'children',
+                    label: 'name'
                 }
             }
         },
@@ -84,10 +86,14 @@
                 let pageParams = new PageParams(1, 15, params);
                 _queryDatabaseList(pageParams)
                     .then(({data, result, message}) => {
-                        console.log(data);
                         if ('success' === result) {
                             this.databaseList = data.list
                             this.databaseTotal = data.total;
+                            //过滤得到组件需要的参数
+                            this.databaseList.forEach(databaseItem => {
+                                databaseItem.name = databaseItem.databaseName;
+                                databaseItem.nodeType = 'db';
+                            })
                         }
                     })
             },
@@ -124,6 +130,47 @@
                         database: database
                     }
                 })
+            },
+            handleNodeClick() {
+                console.log('click!')
+            },
+            loadNode(node, resolve) {
+                if ('db' === node.data.nodeType) {
+                    _executeSQL({
+                        'sql': 'show tables',
+                        'databaseId': node.data.databaseId
+                    }).then(({result, data, message}) => {
+                        let children = [];
+                        let dataList = data[0].dataList
+                        for (let i = 0; i < dataList.length; i++) {
+                            //统一名称
+                            children.push(({
+                                'name': dataList[i].TABLE_NAME,
+                                'nodeType': 'table',
+                                'databaseId': node.data.databaseId,
+                                leaf: false
+                            }))
+                        }
+                        resolve(children)
+                    })
+                } else if ('table' === node.data.nodeType) {
+                    _executeSQL({
+                        'sql': 'select COLUMN_NAME from information_schema.COLUMNS where table_name =' + "'" + node.data.name + "'",
+                        'databaseId': node.data.databaseId
+                    }).then(({result, data, message}) => {
+                        let children = [];
+                        let dataList = data[0].dataList
+                        for (let i = 0; i < dataList.length; i++) {
+                            //统一名称
+                            children.push(({
+                                'name': dataList[i].COLUMN_NAME,
+                                'nodeType': 'field',
+                                leaf: true
+                            }))
+                        }
+                        resolve(children)
+                    })
+                }
             }
         }
     }
