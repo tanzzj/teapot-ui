@@ -5,7 +5,7 @@
                 <div @click="showAddDataSourceDialog=true">添加数据源</div>
                 <el-tree :data="databaseList" :load="loadNode" :props="defaultProps" @node-click="handleClickDatabase" lazy>
                         <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span><i class="el-icon-coin"/>{{ node.label }}</span>
+                            <span><i :class="data.icon" style="padding-right:10px "/>{{ node.label}}</span>
                         </span>
                 </el-tree>
                 <!--分页-->
@@ -93,6 +93,7 @@
                             this.databaseList.forEach(databaseItem => {
                                 databaseItem.name = databaseItem.databaseName;
                                 databaseItem.nodeType = 'db';
+                                databaseItem.icon = 'el-icon-coin'
                             })
                         }
                     })
@@ -123,7 +124,6 @@
                 this.$refs['dataSourceRef'].resetFields();
             },
             handleClickDatabase(database) {
-                console.log(database)
                 this.router.push({
                     name: 'query',
                     params: {
@@ -148,6 +148,7 @@
                                 'name': dataList[i].TABLE_NAME,
                                 'nodeType': 'table',
                                 'databaseId': node.data.databaseId,
+                                'icon': 'el-icon-date',
                                 leaf: false
                             }))
                         }
@@ -165,6 +166,7 @@
                             children.push(({
                                 'name': dataList[i].COLUMN_NAME,
                                 'nodeType': 'field',
+                                'icon': 'el-icon-collection-tag',
                                 leaf: true
                             }))
                         }

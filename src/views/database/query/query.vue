@@ -1,6 +1,9 @@
 <template>
     <div>
         <div>
+            current database: {{selectedDatabase.databaseName}}
+        </div>
+        <div>
             <!--sql执行框-->
             <el-input :rows="10" placeholder="type something" type="textarea" v-model="querySqlContent"/>
         </div>
