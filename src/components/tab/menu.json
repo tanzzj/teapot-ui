@@ -38,6 +38,13 @@
       "title": "zipkin",
       "type": "redirect",
       "redirectTo": "http://zipkin.teamer.com.cn"
+    },
+    {
+      "index": "6",
+      "name": "sentinel",
+      "title": "sentinel",
+      "type": "redirect",
+      "redirectTo": "http://sentinel.teamer.com.cn"
     }
   ]
 }

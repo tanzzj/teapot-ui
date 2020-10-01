@@ -38,9 +38,7 @@
                 <div v-else-if="!isSelect">
                     <div>{{dmlSqlResult}}</div>
                 </div>
-
             </el-tabs>
-
         </div>
     </div>
 </template>

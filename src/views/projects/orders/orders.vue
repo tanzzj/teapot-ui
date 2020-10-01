@@ -65,7 +65,8 @@
         <el-dialog :visible.sync="showMergeOrderDialog" title="合并查询工单">
             <el-input :rows="10" placeholder="请输入内容" type="textarea" v-model="orderContent"/>
             <el-select placeholder="请选择数据源" v-model="selectedDatabase">
-                <el-option :key="item.databaseId" :label="item.databaseName" :value="item.databaseId" v-for="item in projectDatabaseList"/>
+                <el-option :key="item.databaseId" :label="item.databaseName" :value="item.databaseId"
+                           v-for="item in projectDatabaseList"/>
             </el-select>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="handleCloseMergeOrderDialog">取 消</el-button>
@@ -76,6 +77,38 @@
             <span class="dialog-footer" slot="footer">
                 <el-button @click="executeSQL" type="primary">执 行</el-button>
             </span>
+            <div>
+                <div>
+                    <span style="text-align: left"><i class="el-icon-success" style="color: #42b983"/> success </span>
+                </div>
+                <!-- 显示操作结果 -->
+                <el-tabs @tab-click="handleClickTab" closable type="border-card">
+                    <!-- dataResult:{dataList/metaData/sqlType} -->
+                    <template v-for="(data,index) in dataList">
+                        <!-- 显示 result tab -->
+                        <el-tab-pane :key="index"
+                                     :label="'result'+index"
+                                     :name="index+''"
+                                     @click="handleClickTab(data)"
+                        />
+                    </template>
+                    <!-- select 语句显示框 -->
+                    <div v-if="isSelect">
+                        <el-table :data="currentResultList" border fit stripe style="width: 100%">
+                            <el-table-column
+                                    :key="metadataItem.name"
+                                    :label="metadataItem.name"
+                                    :prop="metadataItem.name"
+                                    v-for="metadataItem in currentMetadataList"
+                            />
+                        </el-table>
+                    </div>
+                    <!-- dml语句执行显示结果 -->
+                    <div v-else-if="!isSelect">
+                        <div>{{dmlSqlResult}}</div>
+                    </div>
+                </el-tabs>
+            </div>
         </el-dialog>
     </div>
 
@@ -89,10 +122,7 @@
         _queryProjectOrderDetails,
         _queryProjectOrderList
     } from '@views/projects/orders/orders.js'
-    import {
-        _queryProjectDataBaseList,
-        _executeSQL
-    } from '@views/projects/database/database.js'
+    import {_executeSQL, _queryProjectDataBaseList} from '@views/projects/database/database.js'
     import {PageParams} from "../../../model/PageParams";
 
     export default {
@@ -120,7 +150,8 @@
                     projectOrderDetail: null,
                     content: null,
                     assignedUserList: []
-                }
+                },
+                dataList: []
             }
         },
         methods: {
@@ -180,7 +211,7 @@
                 }).then(({result, message, data}) => {
                     this.showMergeOrderDialog = true;
                     data.forEach(eachOrder => {
-                        this.orderContent += eachOrder.content + '\n\n'
+                        this.orderContent += eachOrder.content + ';' + '\n\n'
                     })
                 })
                 this.queryProjectDataBaseList();
@@ -212,13 +243,38 @@
             /**
              * 执行sql
              */
-            executeSQL(){
+            executeSQL() {
                 _executeSQL({
-                    'databaseId':this.selectedDatabase,
-                    'sql':this.orderContent
-                }).then(({message,result,data})=>{
-                    console.log(message,result,data)
+                    'databaseId': this.selectedDatabase,
+                    'sql': this.orderContent
+                }).then(({message, result, data}) => {
+                    this.dataList = data;
+                    //默认取第一个数组
+                    this.isSelect = data[0].sqlType === 'select'
+                    if (this.isSelect) {
+                        this.currentResultList = data[0].dataList;
+                        this.currentMetadataList = data[0].metaData;
+                    } else {
+                        this.dmlSqlResult = data[0].result
+                    }
                 })
+            },
+            /**
+             * 处理点击tab事件
+             * @param tab 选中的tab
+             * @param event 事件
+             */
+            handleClickTab(tab, event) {
+                if (this.dataList[tab.name].sqlType === 'select') {
+                    this.isSelect = true;
+                    this.currentResultList = this.dataList[tab.name];
+                    this.currentMetadataList = this.dataList[tab.name].metaData;
+                    this.currentResultList = this.dataList[tab.name].dataList;
+                } else {
+                    this.isSelect = false;
+                    this.dmlSqlResult = this.dataList[tab.name].result;
+                }
+
             }
         }
 
