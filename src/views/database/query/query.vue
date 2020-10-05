@@ -4,6 +4,9 @@
             current database: {{selectedDatabase.databaseName}}
         </div>
         <div>
+            <el-button @click="formatSQL">格式化</el-button>
+        </div>
+        <div>
             <!--sql执行框-->
             <el-input :rows="10" placeholder="type something" type="textarea" v-model="querySqlContent"/>
         </div>
@@ -45,6 +48,7 @@
 
 <script>
     import {_executeSQL} from '@views/database/query/query.js'
+    import sqlFormatter from "sql-formatter";
 
     export default {
         name: "query",
@@ -102,6 +106,9 @@
                     this.dmlSqlResult = this.dataList[tab.name].result;
                 }
 
+            },
+            formatSQL() {
+                this.querySqlContent = sqlFormatter.format(this.querySqlContent);
             }
         }
     }

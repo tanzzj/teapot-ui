@@ -79,8 +79,18 @@
             </span>
             <div>
                 <div>
-                    <span style="text-align: left"><i class="el-icon-success" style="color: #42b983"/> success </span>
+                    <div v-if="operationSuccess = true">
+                        <span style="text-align: left"><i class="el-icon-success"
+                                                          style="color: #42b983"/> success </span>
+                    </div>
+                    <div v-else-if="operationSuccess = false">
+                        <span style="text-align: left"><i class="el-icon-success" style="color: #c23e3e"/> fail </span>
+                    </div>
+                    <div v-else>
+                        <span style="text-align: left"></span>
+                    </div>
                 </div>
+
                 <!-- 显示操作结果 -->
                 <el-tabs @tab-click="handleClickTab" closable type="border-card">
                     <!-- dataResult:{dataList/metaData/sqlType} -->
@@ -151,7 +161,11 @@
                     content: null,
                     assignedUserList: []
                 },
-                dataList: []
+                dataList: [],
+                operationSuccess: null,
+                isSelect: true,
+                currentMetadataList: [],
+                currentResultList: []
             }
         },
         methods: {
@@ -249,6 +263,8 @@
                     'sql': this.orderContent
                 }).then(({message, result, data}) => {
                     this.dataList = data;
+                    console.log(result + "<----")
+                    this.operationSuccess = result === 'success'
                     //默认取第一个数组
                     this.isSelect = data[0].sqlType === 'select'
                     if (this.isSelect) {
