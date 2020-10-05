@@ -63,9 +63,9 @@
         mounted() {
             this.queryDatabaseList(null);
         },
-        computed:{
-            routerKey(){
-                return this.$route.name?this.$route.name+ +new Date():this.$route.name+ +new Date()
+        computed: {
+            routerKey() {
+                return this.$route.name ? this.$route.name + +new Date() : this.$route.name + +new Date()
             }
         },
         data() {
@@ -131,16 +131,18 @@
                 this.$refs['dataSourceRef'].resetFields();
             },
             handleClickDatabase(database) {
-                console.log(database)
-                this.router.push({
-                    name: 'query',
-                    query: {
-                        databaseId: database.databaseId
-                    },
-                    params: {
-                        database: database,
-                    }
-                })
+                //需点击database才进行路由跳转，否则仅展开
+                if (database.databaseId !== undefined) {
+                    this.router.push({
+                        name: 'query',
+                        query: {
+                            databaseId: database.databaseId
+                        },
+                        params: {
+                            database: database,
+                        }
+                    })
+                }
             },
             handleNodeClick() {
                 console.log('click!')
