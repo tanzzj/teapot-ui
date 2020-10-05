@@ -3,7 +3,8 @@
         <el-container>
             <el-aside>
                 <div @click="showAddDataSourceDialog=true">添加数据源</div>
-                <el-tree :data="databaseList" :load="loadNode" :props="defaultProps" @node-click="handleClickDatabase" lazy>
+                <el-tree :data="databaseList" :load="loadNode" :props="defaultProps" @node-click="handleClickDatabase"
+                         lazy>
                         <span class="custom-tree-node" slot-scope="{ node, data }">
                             <span><i :class="data.icon" style="padding-right:10px "/>{{ node.label}}</span>
                         </span>
@@ -22,7 +23,7 @@
                 </el-pagination>
             </el-aside>
             <el-main>
-                <router-view/>
+                <router-view :key="routerKey"/>
             </el-main>
         </el-container>
         <el-dialog :visible.sync="showAddDataSourceDialog" title="添加数据源">
@@ -61,6 +62,11 @@
         name: "database",
         mounted() {
             this.queryDatabaseList(null);
+        },
+        computed:{
+            routerKey(){
+                return this.$route.name?this.$route.name+ +new Date():this.$route.name+ +new Date()
+            }
         },
         data() {
             return {
@@ -124,10 +130,14 @@
                 this.$refs['dataSourceRef'].resetFields();
             },
             handleClickDatabase(database) {
+                console.log(database)
                 this.router.push({
                     name: 'query',
+                    query: {
+                        databaseId: database.databaseId
+                    },
                     params: {
-                        database: database
+                        database: database,
                     }
                 })
             },

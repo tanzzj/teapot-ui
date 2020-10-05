@@ -54,7 +54,7 @@
         name: "query",
         mounted() {
             this.selectedDatabase = this.$route.params.database
-            if (this.selectedDatabase === null) {
+            if (this.selectedDatabase === undefined) {
                 this.router.push({
                     name: 'database'
                 })
