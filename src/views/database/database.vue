@@ -83,7 +83,8 @@
                 },
                 defaultProps: {
                     children: 'children',
-                    label: 'name'
+                    label: 'name',
+                    isLeaf: 'leaf'
                 }
             }
         },
@@ -159,7 +160,6 @@
                                 'nodeType': 'table',
                                 'databaseId': node.data.databaseId,
                                 'icon': 'el-icon-date',
-                                leaf: false
                             }))
                         }
                         resolve(children)
