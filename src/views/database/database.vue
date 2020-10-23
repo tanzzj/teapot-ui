@@ -6,7 +6,17 @@
                 <el-tree :data="databaseList" :load="loadNode" :props="defaultProps" @node-click="handleClickDatabase"
                          lazy>
                         <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span><i :class="data.icon" style="padding-right:10px "/>{{ node.label}}</span>
+                            <span>
+                                <!--主键-->
+                                <i v-if="node.data.columnKey==='PRI'" :class="data.icon"
+                                   style="padding-right:10px;color: darkorange"/>
+                                <!--非主键-->
+                                <i v-else :class="data.icon" style="padding-right:10px"/>
+                                <span>{{ node.label}}</span>
+                                <span v-if="node.data.nodeType === 'field'" style="color: silver">
+                                    {{ node.data.columnType }}
+                                </span>
+                            </span>
                         </span>
                 </el-tree>
                 <!--分页-->
@@ -168,7 +178,7 @@
                     })
                 } else if ('table' === node.data.nodeType) {
                     _executeSQL({
-                        'sql': 'select COLUMN_NAME from information_schema.COLUMNS where table_name =' + "'" + node.data.name + "'",
+                        'sql': 'SHOW FULL COLUMNS FROM ' + node.data.name,
                         'databaseId': node.data.databaseId
                     }).then(({result, data, message}) => {
                         let children = [];
@@ -177,8 +187,11 @@
                             //统一名称
                             children.push(({
                                 'name': dataList[i].COLUMN_NAME,
+                                'columnType': dataList[i].COLUMN_TYPE,
+                                'columnKey': dataList[i].COLUMN_KEY,
+                                'comment': dataList[i].COLUMN_COMMENT,
                                 'nodeType': 'field',
-                                'icon': 'el-icon-collection-tag',
+                                'icon': dataList[i].COLUMN_KEY === 'PRI' ? 'el-icon-key' : 'el-icon-collection-tag',
                                 leaf: true
                             }))
                         }
@@ -192,4 +205,5 @@
 
 <style scoped>
     @import "style.css";
+
 </style>
