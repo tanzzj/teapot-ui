@@ -177,9 +177,26 @@
                         resolve(children)
                     })
                 } else if ('table' === node.data.nodeType) {
+                    let children = [];
+                    children.push(
+                        ({
+                            'name': '字段',
+                            'currentTable': node.data.name,
+                            'currentDatabaseId': node.data.databaseId,
+                            'nodeType': 'columns',
+                        }), ({
+                            'name': '索引',
+                            'currentTable': node.data.name,
+                            'currentDatabaseId': node.data.databaseId,
+                            'nodeType': 'indexes',
+                        })
+                    )
+                    console.log(({...children}))
+                    resolve(children);
+                } else if ('columns' === node.data.nodeType) {
                     _executeSQL({
-                        'sql': 'SHOW FULL COLUMNS FROM ' + node.data.name,
-                        'databaseId': node.data.databaseId
+                        'sql': 'SHOW FULL COLUMNS FROM ' + node.data.currentTable,
+                        'databaseId': node.data.currentDatabaseId
                     }).then(({result, data, message}) => {
                         let children = [];
                         let dataList = data[0].dataList
@@ -192,6 +209,27 @@
                                 'comment': dataList[i].COLUMN_COMMENT,
                                 'nodeType': 'field',
                                 'icon': dataList[i].COLUMN_KEY === 'PRI' ? 'el-icon-key' : 'el-icon-collection-tag',
+                                leaf: true
+                            }))
+                        }
+                        resolve(children)
+                    })
+                } else if ('indexes' === node.data.nodeType) {
+                    _executeSQL({
+                        'sql': 'SHOW INDEX FROM ' + node.data.currentTable,
+                        'databaseId': node.data.currentDatabaseId
+                    }).then(({result, data, message}) => {
+                        let children = [];
+                        let dataList = data[0].dataList
+                        for (let i = 0; i < dataList.length; i++) {
+                            //统一名称
+                            children.push(({
+                                'name': dataList[i].INDEX_NAME,
+                                'columnType': '(' + dataList[i].COLUMN_NAME + ')',
+                                'columnKey': dataList[i].COLUMN_KEY,
+                                'comment': dataList[i].COLUMN_COMMENT,
+                                'nodeType': 'field',
+                                'icon': 'el-icon-connection',
                                 leaf: true
                             }))
                         }
