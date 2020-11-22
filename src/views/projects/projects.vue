@@ -30,6 +30,7 @@
                     <el-tab-pane label="配置中心" name="projectConfiguration">配置中心</el-tab-pane>
                     <el-tab-pane label="工单" name="projectOrders"/>
                     <el-tab-pane label="变量" name="projectParams"/>
+                    <el-tab-pane label="命名空间" name="projectNamespace">命名空间</el-tab-pane>
                     <router-view/>
                 </el-tabs>
             </el-main>

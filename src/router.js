@@ -9,6 +9,9 @@ import projectOrders from '@views/projects/orders/orders.vue'
 import projectDatabase from '@views/projects/database/database.vue'
 import custom from '@views/custom/custom.vue'
 import orders from '@views/orders/orders.vue'
+import projectConfiguration from "@views/projects/configuration/projectConfiguration.vue";
+import projectNamespace from '@views/projects/namespace/projectNamespace.vue'
+import projectParams from "@views/projects/params/projectParams.vue";
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -50,6 +53,21 @@ const routes = [
                     path: '/database',
                     name: 'projectDatabase',
                     component: projectDatabase
+                },
+                {
+                    path: '/configuration',
+                    name: 'projectConfiguration',
+                    component: projectConfiguration
+                },
+                {
+                    path: '/namespace',
+                    name: 'projectNamespace',
+                    component: projectNamespace
+                },
+                {
+                    path: '/params',
+                    name: 'projectParams',
+                    component: projectParams
                 }]
         }, {
             path: '/custom',
