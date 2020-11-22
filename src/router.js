@@ -10,7 +10,7 @@ import projectDatabase from '@views/projects/database/database.vue'
 import custom from '@views/custom/custom.vue'
 import orders from '@views/orders/orders.vue'
 import projectConfiguration from "@views/projects/configuration/projectConfiguration.vue";
-import projectNamespace from '@views/projects/namespace/projectNamespace.vue'
+import environment from '@views/projects/environment/environment.vue'
 import projectParams from "@views/projects/params/projectParams.vue";
 
 Vue.use(VueRouter)
@@ -60,9 +60,9 @@ const routes = [
                     component: projectConfiguration
                 },
                 {
-                    path: '/namespace',
-                    name: 'projectNamespace',
-                    component: projectNamespace
+                    path: '/environment',
+                    name: 'environment',
+                    component: environment
                 },
                 {
                     path: '/params',
