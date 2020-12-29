@@ -31,3 +31,28 @@ export function _mergeOrder(data) {
         data
     })
 }
+
+export function _queryProjectOrderLogs(data) {
+    return request({
+        url: '/api/project/order/queryProjectOrderLogs',
+        method: 'post',
+        data
+    })
+}
+
+
+export function _insertProjectOrderLogs(data) {
+    return request({
+        url: '/api/project/order/insertProjectOrderLogs',
+        method: 'post',
+        data
+    })
+}
+
+export function _executeOrder(data) {
+    return request({
+        url: '/api/project/order/executeOrder',
+        method: 'post',
+        data
+    })
+}

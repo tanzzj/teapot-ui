@@ -30,8 +30,14 @@
         <!--dialog区-->
         <el-dialog :visible.sync="showOrdersDetailsDialog" title="工单详情">
             <el-form>
-                <el-form-item label="工单名">{{ orderDetails.projectOrderName }}</el-form-item>
-                <el-form-item label="工单类型">{{ orderDetails.orderType }}</el-form-item>
+                <el-form-item label="工单标题">{{ orderDetails.projectOrderName }}</el-form-item>
+                <el-form-item label="工单描述">{{ orderDetails.projectOrderDetail }}</el-form-item>
+                <el-form-item label="工单类型">
+                    <el-select v-model="orderDetails.orderType" >
+                        <el-option label="SQL工单" value="sql"/>
+                        <el-option label="配置工单" value="configuration"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="工单内容">{{ orderDetails.content }}</el-form-item>
             </el-form>
             <span class="dialog-footer" slot="footer">
@@ -41,11 +47,14 @@
         <!--创建工单-->
         <el-dialog :visible.sync="showCreateOrderDialog" title="创建工单">
             <el-form :model="createOrderParams" label-width="120px" ref="createOrdersRef">
-                <el-form-item label="工单名" prop="projectOrderName">
-                    <el-input v-model="createOrderParams.projectOrderName"/>
+                <el-form-item label="工单类型">
+                    <el-select v-model="createOrderParams.orderType" >
+                        <el-option label="SQL工单" value="1"/>
+                        <el-option label="配置工单" value="2"/>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="工单类型" prop="orderType">
-                    <el-input v-model="createOrderParams.orderType"/>
+                <el-form-item label="工单标题" prop="projectOrderName">
+                    <el-input v-model="createOrderParams.projectOrderName"/>
                 </el-form-item>
                 <el-form-item label="工单详情" prop="projectOrderDetail">
                     <el-input v-model="createOrderParams.projectOrderDetail"/>
@@ -53,9 +62,6 @@
                 <el-form-item label="工单内容" prop="content">
                     <el-input type="textarea" v-model="createOrderParams.content"/>
                 </el-form-item>
-                <!--                <el-form-item label="审批人" prop="assignedUserList">-->
-                <!--                    <el-input v-model="createOrderParams.assignedUserList"/>-->
-                <!--                </el-form-item>-->
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeCreateOrderDialog">取 消</el-button>
@@ -142,6 +148,7 @@
         },
         data() {
             return {
+                router: this.$router,
                 projectId: this.$route.params.projectId,
                 showCreateOrderDialog: false,
                 showSelection: false,
@@ -183,6 +190,7 @@
             },
             createProjectOrder() {
                 let createOrdersParams = this.createOrderParams;
+                console.log(createOrdersParams);
                 _createProjectOrder({
                     ...createOrdersParams,
                     projectId: this.projectId
@@ -193,15 +201,17 @@
                     }
                 })
             },
-            handleClickOrdersDetails(row) {
-                this.showOrdersDetailsDialog = true;
-                _queryProjectOrderDetails({
-                    'projectOrderId': row.projectOrderId
-                }).then(({result, message, data}) => {
-                    if ('success' === result) {
-                        this.orderDetails = data;
-                    }
-                })
+             handleClickOrdersDetails(row) {
+                 this.router.push({
+                     name: 'ordersDetails',
+                     query: {
+                         orderId: row.projectOrderId
+                     },
+                     params:{
+                         projectOrder: row,
+                         projectId: this.projectId
+                     }
+                 })
             },
             createOrder() {
                 this.showCreateOrderDialog = true;

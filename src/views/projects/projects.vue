@@ -58,7 +58,7 @@
         name: "projects",
         mounted() {
             this.queryProjectList(null)
-            this.router.push({
+            this.$router.push({
                 name: 'projectDatabase',
                 params: {
                     projectId: this.currentProject.projectId

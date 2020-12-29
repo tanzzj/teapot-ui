@@ -12,6 +12,7 @@ import orders from '@views/orders/orders.vue'
 import projectConfiguration from "@views/projects/configuration/projectConfiguration.vue";
 import environment from '@views/projects/environment/environment.vue'
 import projectParams from "@views/projects/params/projectParams.vue";
+import ordersDetails from "@views/projects/orders/ordersDetails.vue";
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -68,6 +69,11 @@ const routes = [
                     path: '/params',
                     name: 'projectParams',
                     component: projectParams
+                },
+                {
+                    path: '/orders/details',
+                    name: 'ordersDetails',
+                    component: ordersDetails
                 }]
         }, {
             path: '/custom',
