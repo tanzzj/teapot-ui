@@ -135,7 +135,8 @@
                     "databaseId": this.databaseId
                 })).then(({result,message,data})=>{
                     if ('success'===result){
-                        console.log(data);
+                        Message({message: message, type: 'success', duration: 2 * 1000});
+                        this.closeExecuteOrderDialog();
                     }
                 })
             },
@@ -154,6 +155,10 @@
                 this.showCreateOrderDialog = false;
                 this.$refs['createOrderLogsRef'].resetFields();
                 this.queryProjectOrderLogs();
+            },
+            closeExecuteOrderDialog(){
+                this.showExecuteDialog = false;
+                this.$refs[''].resetFields();
             }
 
         }
